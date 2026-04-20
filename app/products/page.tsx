@@ -67,7 +67,7 @@ export default function ProductsPage() {
   return (
     <div className="container mx-auto px-4 py-8 lg:py-12">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-8 rounded-3xl border border-white/10 bg-[#1E2344]/70 p-6">
         <h1 className="mb-2 text-3xl font-bold text-white lg:text-4xl">
           Products
         </h1>
@@ -84,7 +84,7 @@ export default function ProductsPage() {
           placeholder="Search products..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="border-white/10 bg-[#1E2344] pl-10 text-white placeholder:text-gray-500 focus:border-[#00e06a] focus:ring-[#00e06a]/20"
+          className="h-11 rounded-full border-white/10 bg-[#1E2344] pl-10 text-white placeholder:text-gray-500 focus:border-[#00e06a] focus:ring-[#00e06a]/20"
         />
       </div>
 

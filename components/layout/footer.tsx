@@ -1,17 +1,21 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-[#181C32]">
+    <footer className="border-t border-white/10 bg-[#181C32]/95">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid gap-8 md:grid-cols-4">
+        <div className="grid gap-8 rounded-3xl border border-white/10 bg-[#1E2344]/70 p-8 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00e06a]">
-                <span className="text-lg font-bold text-[#181C32]">P</span>
-              </div>
-              <span className="text-xl font-bold text-white">Paymera</span>
+            <Link href="/" className="inline-flex items-center rounded-full border border-white/10 bg-[#181C32] px-3 py-1.5">
+              <Image
+                src="/paymera-icon.png"
+                alt="Paymera"
+                width={120}
+                height={26}
+                className="h-5 w-auto"
+              />
             </Link>
             <p className="mt-4 text-sm text-gray-400">
               Secure and seamless e-payment solutions for modern businesses.
@@ -73,7 +77,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-8 text-center">
+        <div className="mt-8 border-t border-white/10 pt-6 text-center">
           <p className="text-sm text-gray-400">
             © {new Date().getFullYear()} Paymera. All rights reserved.
           </p>

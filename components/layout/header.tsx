@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ShoppingCart, User, LogOut, Menu, X } from "lucide-react";
+import { ShoppingCart, User, LogOut, Menu, X, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth-context";
@@ -20,30 +21,41 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#181C32]/95 backdrop-blur supports-[backdrop-filter]:bg-[#181C32]/80">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#181C32]/85 backdrop-blur-xl supports-backdrop-filter:bg-[#181C32]/75">
+      <div className="container mx-auto flex h-20 items-center justify-between px-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00e06a]">
-            <span className="text-lg font-bold text-[#181C32]">P</span>
-          </div>
-          <span className="text-xl font-bold text-white">Paymera</span>
+        <Link
+          href="/"
+          className="flex items-center gap-2 rounded-full border border-white/10 bg-[#1E2344]/90 px-4 py-2 shadow-lg shadow-black/20"
+        >
+          <Image
+            src="/paymera-icon.png"
+            alt="Paymera"
+            width={110}
+            height={24}
+            priority
+            className="h-5 w-auto"
+          />
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-[#1E2344]/80 p-1 md:flex">
           <Link
             href="/"
-            className="text-sm text-gray-300 transition-colors hover:text-white"
+            className="rounded-full px-4 py-2 text-sm text-white transition-colors hover:bg-white/10"
           >
             Home
           </Link>
           <Link
             href="/products"
-            className="text-sm text-gray-300 transition-colors hover:text-white"
+            className="rounded-full px-4 py-2 text-sm text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
           >
             Products
           </Link>
+          <span className="ml-1 inline-flex items-center gap-1 rounded-full bg-[#00e06a]/15 px-3 py-1 text-xs text-[#00e06a]">
+            <Sparkles className="h-3 w-3" />
+            New Deals
+          </span>
         </nav>
 
         {/* Desktop Actions */}
@@ -99,7 +111,7 @@ export function Header() {
 
         {/* Mobile Menu Button */}
         <button
-          className="text-gray-300 md:hidden"
+          className="rounded-full border border-white/10 bg-[#1E2344]/80 p-2 text-gray-300 md:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

@@ -3,13 +3,13 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { CheckCircle, XCircle, Loader2, Clock, ShoppingBag } from "lucide-react";
+import { CheckCircle, XCircle, Loader2, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/services/api";
 import { useCart } from "@/contexts/cart-context";
 
-type PaymentStatus = "loading" | "success" | "pending" | "failed";
+type PaymentStatus = "loading" | "success" | "failed";
 
 function PaymentCallbackContent() {
   const searchParams = useSearchParams();
@@ -22,10 +22,17 @@ function PaymentCallbackContent() {
   } | null>(null);
 
   useEffect(() => {
+    const sleep = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
+
     const checkPaymentStatus = async () => {
       // Get payment ID from URL params or localStorage
       const paymentId =
         searchParams.get("paymentId") ||
+        searchParams.get("payment_id") ||
+        searchParams.get("PaymentId") ||
+        searchParams.get("id") ||
+        searchParams.get("pid") ||
         localStorage.getItem("paymera_payment_id");
 
       if (!paymentId) {
@@ -34,34 +41,42 @@ function PaymentCallbackContent() {
       }
 
       try {
-        const response = await api.getPaymentStatus(paymentId);
+        // Payment providers can be briefly delayed before reporting final success.
+        for (let attempt = 0; attempt < 4; attempt++) {
+          const response = await api.getPaymentStatus(paymentId);
 
-        if (response.ErrorCode === 0) {
-          const paymentStatus = response.Data?.status;
-          setPaymentDetails({
-            amount: response.Data?.amount,
-            notes: response.Data?.notes,
-            rrn: response.Data?.rrn,
-          });
+          if (response.ErrorCode === 0) {
+            const paymentStatus = String(response.Data?.status ?? "")
+              .trim()
+              .toUpperCase();
+            setPaymentDetails({
+              amount: response.Data?.amount,
+              notes: response.Data?.notes,
+              rrn: response.Data?.rrn,
+            });
 
-          // P = Pending, S = Success, F = Failed
-          if (paymentStatus === "S") {
-            setStatus("success");
-            // Clear cart after successful payment
-            await refreshCart();
-          } else if (paymentStatus === "P") {
-            setStatus("pending");
-          } else {
-            setStatus("failed");
+            if (
+              ["S", "SUCCESS", "SUCCEEDED", "COMPLETED", "PAID"].includes(
+                paymentStatus
+              )
+            ) {
+              setStatus("success");
+              await refreshCart();
+              localStorage.removeItem("paymera_payment_id");
+              return;
+            }
           }
-        } else {
-          setStatus("failed");
+
+          if (attempt < 3) {
+            await sleep(1500);
+          }
         }
+
+        setStatus("failed");
+        localStorage.removeItem("paymera_payment_id");
       } catch (error) {
         console.error("Failed to check payment status:", error);
         setStatus("failed");
-      } finally {
-        // Clean up stored payment ID
         localStorage.removeItem("paymera_payment_id");
       }
     };
@@ -119,36 +134,6 @@ function PaymentCallbackContent() {
                 Continue Shopping
               </Button>
             </Link>
-          </>
-        )}
-
-        {status === "pending" && (
-          <>
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-yellow-500/20">
-              <Clock className="h-10 w-10 text-yellow-400" />
-            </div>
-            <h1 className="mb-2 text-2xl font-bold text-white">
-              Payment Pending
-            </h1>
-            <p className="mb-6 text-gray-400">
-              Your payment is being processed. This may take a few moments.
-            </p>
-            <div className="flex flex-col gap-3">
-              <Button
-                onClick={() => window.location.reload()}
-                className="w-full bg-[#00e06a] text-[#181C32] hover:bg-[#00e06a]/90"
-              >
-                Check Status Again
-              </Button>
-              <Link href="/">
-                <Button
-                  variant="ghost"
-                  className="w-full text-gray-400 hover:bg-white/5 hover:text-white"
-                >
-                  Return Home
-                </Button>
-              </Link>
-            </div>
           </>
         )}
 

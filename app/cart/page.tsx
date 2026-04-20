@@ -87,7 +87,7 @@ export default function CartPage() {
   return (
     <div className="container mx-auto px-4 py-8 lg:py-12">
       {/* Header */}
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex items-center justify-between rounded-3xl border border-white/10 bg-[#1E2344]/70 p-6">
         <div>
           <h1 className="text-3xl font-bold text-white">Shopping Cart</h1>
           <p className="mt-1 text-gray-400">

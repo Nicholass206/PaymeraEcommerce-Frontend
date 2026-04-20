@@ -33,8 +33,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const price = parseFloat(product.price);
 
   return (
-    <Card className="group overflow-hidden border-white/10 bg-[#1E2344] transition-all duration-300 hover:border-[#00e06a]/50 hover:shadow-lg hover:shadow-[#00e06a]/10">
-      <div className="relative aspect-square overflow-hidden bg-[#252A4A]">
+    <Card className="group overflow-hidden rounded-2xl border-white/10 bg-[#1E2344]/90 transition-all duration-300 hover:-translate-y-1 hover:border-[#00e06a]/50 hover:shadow-xl hover:shadow-[#00e06a]/10">
+      <div className="relative aspect-square overflow-hidden bg-linear-to-b from-[#252A4A] to-[#181C32]">
         <div className="flex h-full items-center justify-center">
           <Package className="h-20 w-20 text-gray-500 transition-transform duration-300 group-hover:scale-110" />
         </div>
@@ -49,13 +49,13 @@ export function ProductCard({ product }: ProductCardProps) {
           </span>
         )}
       </div>
-      <CardContent className="p-4">
+      <CardContent className="p-5">
         <Link href={`/products/${product.id}`}>
           <h3 className="mb-1 line-clamp-1 text-lg font-semibold text-white transition-colors hover:text-[#00e06a]">
             {product.name}
           </h3>
         </Link>
-        <p className="mb-3 line-clamp-2 text-sm text-gray-400">
+        <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-gray-400">
           {product.description}
         </p>
         <div className="flex items-center justify-between">

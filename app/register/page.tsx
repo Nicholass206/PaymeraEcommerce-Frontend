@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -49,10 +50,16 @@ export default function RegisterPage() {
 
   return (
     <div className="container mx-auto flex min-h-[80vh] items-center justify-center px-4 py-16">
-      <Card className="w-full max-w-md border-white/10 bg-[#1E2344]">
+      <Card className="w-full max-w-md rounded-3xl border-white/10 bg-[#1E2344]/90 shadow-xl shadow-black/20">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#00e06a]">
-            <span className="text-xl font-bold text-[#181C32]">P</span>
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#00e06a]/15">
+            <Image
+              src="/paymera-icon.png"
+              alt="Paymera icon"
+              width={28}
+              height={28}
+              className="h-7 w-7 object-contain"
+            />
           </div>
           <CardTitle className="text-2xl text-white">Create Account</CardTitle>
           <CardDescription className="text-gray-400">
